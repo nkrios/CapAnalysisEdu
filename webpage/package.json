@@ -1,0 +1,21 @@
+{
+  "name": "dataviz",
+  "version": "1.0.0",
+  "description": "Package for payroll data viz",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "shankar97"
+  },
+  "keywords": [
+    "d3-test"
+  ],
+  "author": "Shankar Salwan <shankar97@u.northwestern.edu>",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^5.5.0"
+  }
+}
