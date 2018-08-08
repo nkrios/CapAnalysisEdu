@@ -1,1 +1,193 @@
-<html></html>
+<!DOCTYPE html>
+<html>
+	<head>
+		 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+		 <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+		 <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		 <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+		 <script src="https://d3js.org/d3.v5.js"></script>
+	</head>
+	<style type="text/css">
+		body{
+			margin: 0;
+			font-family: arial, sans;
+		}
+
+		.label{
+			font-size: 15px;
+		}
+
+		.legend text,
+		.axis text {
+			font-size: 13px;
+			fill: #333;
+		}
+
+		.axis path,
+		.axis line{
+			fill: none;
+			stroke-width: 1px;
+			stroke: #777;
+		}
+
+		.circle{
+			fill-opacity: 0.65;
+		}
+
+		.bubble{
+			opacity: 1;
+			transition: opacity 0.3s;
+		}
+
+		.bubble:hover text{
+			opacity: 1;
+		}
+
+		.bubble:hover circle{
+			fill-opacity: 1;
+		}
+
+		.legend rect{
+			fill-opacity: 0.75;
+		}
+
+		.legeng:hover rect{
+			fill-opacity:1;
+		}
+	</style>
+	<body>
+		<div id="plot"></div>
+	</body>
+	<script type="text/javascript">
+        var datalog = [];
+        d3.csv("../scripts/analysis_testfinal.csv").then(function(data) {
+			data.forEach(function(d){
+				d.attrition_rate = parseFloat(d.attrition_rate);
+				d.ROI = parseFloat(d.ROI);
+				d.empId = d.empId;
+			  });
+			datalog = data;
+	        var margin = { top: 20, right: 20, bottom: 30, left: 30 };
+	        	width = 900 - margin.left - margin.right,
+	        	height = 480 - margin.top - margin.bottom;
+
+	        var xpoint = "attrition_rate";
+	        var ypoint = "ROI";
+
+	        var tooltip = d3.select("body").append("div")
+	            .attr("class", "tooltip")
+	            .style("opacity", 0);
+
+	        var x = d3.scaleLinear()          
+	              .range([0, width])
+	              .nice();
+
+	        var y = d3.scaleLinear()
+	            .range([height, 0]);
+
+	        var xAxis = d3.axisBottom(x).ticks(12),
+	            yAxis = d3.axisLeft(y).ticks(12 * height / width);
+
+	        var brush = d3.brush().extent([[0, 0], [width, height]]).on("end", brushended),
+	            idleTimeout,
+	            idleDelay = 350;
+	     
+	        var svg = d3.select("body").append("svg")
+	                    .attr("width", width + margin.left + margin.right)
+	                    .attr("height", height + margin.top + margin.bottom)
+	                    .append("g")
+	                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	        var clip = svg.append("defs").append("svg:clipPath")
+	            .attr("id", "clip")
+	            .append("svg:rect")
+	            .attr("width", width )
+	            .attr("height", height )
+	            .attr("x", 0) 
+	            .attr("y", 0); 
+	        var xExtent = d3.extent(datalog, function (d) { return d[xpoint]; });
+	        var yExtent = d3.extent(datalog, function (d) { return d[ypoint]; });
+	        x.domain(d3.extent(datalog, function (d) { return d[xpoint]; })).nice();
+	        y.domain(d3.extent(datalog, function (d) { return d[ypoint]; })).nice();
+
+	        var scatter = svg.append("g")
+	             .attr("id", "scatterplot")
+	             .attr("clip-path", "url(#clip)");
+	            
+	        scatter.selectAll(".dot")
+	            .data(datalog)
+	          .enter().append("circle")
+	            .attr("class", "dot")
+	            .attr("r", 2.5)
+	            .attr("cx", function (d) { return x(d[xpoint]); })
+	            .attr("cy", function (d) { return y(d[ypoint]); })
+	            .attr("opacity", 0.5)
+	            .style("fill", "#4292c6");
+
+	        // scatter.append('title')
+	        // 	.text(function(d){
+	        // 		return "Employee ID: " + d.empId;
+	        // 	});
+	        // x axis
+	        svg.append("g")
+	           .attr("class", "x axis")
+	           .attr('id', "axis--x")
+	           .attr("transform", "translate(0," + height + ")")
+	           .call(xAxis);
+
+	        svg.append("text")
+	         .style("text-anchor", "end")
+	            .attr("x", width)
+	            .attr("y", height - 8)
+	         .text("Attrition Rate");
+
+	        // y axis
+	        svg.append("g")
+	            .attr("class", "y axis")
+	            .attr('id', "axis--y")
+	            .call(yAxis);
+
+	        svg.append("text")
+	            .attr("transform", "rotate(-90)")
+	            .attr("y", 6)
+	            .attr("dy", "1em")
+	            .style("text-anchor", "end")
+	            .text("Return on Investment");
+
+	        scatter.append("g")
+	            .attr("class", "brush")
+	            .call(brush);
+
+	        function brushended() {
+
+	            var s = d3.event.selection;
+	            if (!s) {
+	                if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+	                x.domain(d3.extent(datalog, function (d) { return d[xpoint]; })).nice();
+	                y.domain(d3.extent(datalog, function (d) { return d[ypoint]; })).nice();
+	            } else {
+	                
+	                x.domain([s[0][0], s[1][0]].map(x.invert, x));
+	                y.domain([s[1][1], s[0][1]].map(y.invert, y));
+	                scatter.select(".brush").call(brush.move, null);
+	            }
+	            zoom();
+	        }
+
+	        function idled() {
+	            idleTimeout = null;
+	        }
+
+	        function zoom() {
+
+	            var t = scatter.transition().duration(750);
+	            svg.select("#axis--x").transition(t).call(xAxis);
+	            svg.select("#axis--y").transition(t).call(yAxis);
+	            scatter.selectAll("circle").transition(t)
+	            .attr("cx", function (d) { return x(d[xpoint]); })
+	            .attr("cy", function (d) { return y(d[ypoint]); });
+	        }
+	    });
+	</script>
+
+</html>
