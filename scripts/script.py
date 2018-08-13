@@ -15,4 +15,6 @@ sat_level = dataset["satisfaction_level"]
 dataset["ROI"] = np.divide((np.multiply(last_eval,projects)),(np.multiply(salary,years)))
 dataset["attrition_rate"] = np.divide(last_eval,sat_level)
 
+conditions = [((dataset["ROI"]<=149) & (dataset["Risk"]))]
+
 dataset.to_csv("data_analysis2.csv")

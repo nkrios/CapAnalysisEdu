@@ -60,18 +60,20 @@
 	</body>
 	<script type="text/javascript">
         var datalog = [];
-        d3.csv("../scripts/analysis_testfinal.csv").then(function(data) {
+        d3.csv("../scripts/analysis_encoded1.csv").then(function(data) {
 			data.forEach(function(d){
-				d.attrition_rate = parseFloat(d.attrition_rate);
+				d.Risk = parseFloat(d.Risk);
 				d.ROI = parseFloat(d.ROI);
 				d.empId = d.empId;
+				d.color_risk = +d.color_risk;
+				// console.log(d.color_risk);
 			  });
 			datalog = data;
 	        var margin = { top: 20, right: 20, bottom: 30, left: 30 };
 	        	width = 900 - margin.left - margin.right,
 	        	height = 480 - margin.top - margin.bottom;
-
-	        var xpoint = "attrition_rate";
+	        var color = d3.scaleOrdinal(d3.schemeCategory10);
+	        var xpoint = "Risk";
 	        var ypoint = "ROI";
 
 	        var tooltip = d3.select("body").append("div")
@@ -122,7 +124,7 @@
 	            .attr("cx", function (d) { return x(d[xpoint]); })
 	            .attr("cy", function (d) { return y(d[ypoint]); })
 	            .attr("opacity", 0.5)
-	            .style("fill", "#4292c6");
+	            .style("fill", function (d) {return color(d["color_risk"]);});
 
 	        // scatter.append('title')
 	        // 	.text(function(d){
@@ -139,7 +141,7 @@
 	         .style("text-anchor", "end")
 	            .attr("x", width)
 	            .attr("y", height - 8)
-	         .text("Attrition Rate");
+	         .text("Risk");
 
 	        // y axis
 	        svg.append("g")
@@ -152,7 +154,7 @@
 	            .attr("y", 6)
 	            .attr("dy", "1em")
 	            .style("text-anchor", "end")
-	            .text("Return on Investment");
+	            .text("Work Output");
 
 	        scatter.append("g")
 	            .attr("class", "brush")
