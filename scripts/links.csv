@@ -1,0 +1,10 @@
+target,source,type
+0,1,type1
+0,2,type2
+0,3,type2
+3,4,type2
+4,5,type1
+2,5,type2
+7,8,type1
+4,8,type1
+5,7,type1
