@@ -4,37 +4,48 @@
 		 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 		 <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 		 <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-		 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		 <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 		 <script src="https://d3js.org/d3.v5.js"></script>
 		 <link rel="stylesheet" type="text/css" href="style.css"/>
-		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<div id="plot"></div>
+		
 
 		<div class = "container">
-			<table class="table">
-			  <thead class="thead-dark">
-			    <tr>
-			      	<th class="col" id = "empId">Employee ID</th>
-					<th class="col" id="satisfaction">Satisfaction Level</th>
-					<th class="col" id="eval">Last Evaluation</th>
-					<th class="col" id="project">Number of Projects</th>
-					<th class="col" id="avg-monthly-hours">Average Monthly Hours</th>
-					<th class="col" id="time">Years in Company</th>
-					<th class="col" id="salary">Salary Rank</th>
-					<th class="col" id="position">Position</th>
-					<th class="col" id="ROI">Output</th>
-					<th class="col" id="Risk">Risk</th>
-			    </tr>
-			  </thead>
-			  <tbody id="employee-list">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#scatterplot">Scatter Plot</a></li>
+				<li><a data-toggle="tab" href="#graph">Graph</a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="scatterplot" class="tab-pane fade in active">
+					<div id="plot"></div>
+					<table class="table">
+					  <thead class="thead-dark">
+					    <tr>
+					      	<th class="col" id = "empId">Employee ID</th>
+							<th class="col" id="satisfaction">Satisfaction Level</th>
+							<th class="col" id="eval">Last Evaluation</th>
+							<th class="col" id="project">Number of Projects</th>
+							<th class="col" id="avg-monthly-hours">Average Monthly Hours</th>
+							<th class="col" id="time">Years in Company</th>
+							<th class="col" id="salary">Salary Rank</th>
+							<th class="col" id="position">Position</th>
+							<th class="col" id="ROI">Output</th>
+							<th class="col" id="Risk">Risk</th>
+					    </tr>
+					  </thead>
+					  <tbody id="employee-list">
 
-			  </tbody>
-			</table>
+					  </tbody>
+					</table>
+				</div>
+				<div id="graph" class="tab-pane fade">
+				</div>
+			</div>
 		</div>
-		<div class="graph"></div>
 	</body>
 	<script type="text/javascript" src="script.js">
 

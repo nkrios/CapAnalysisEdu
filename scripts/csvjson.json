@@ -1,0 +1,47 @@
+[
+  {
+    "target": 0,
+    "source": 1,
+    "type": "type1"
+  },
+  {
+    "target": 0,
+    "source": 2,
+    "type": "type2"
+  },
+  {
+    "target": 0,
+    "source": 3,
+    "type": "type2"
+  },
+  {
+    "target": 3,
+    "source": 4,
+    "type": "type2"
+  },
+  {
+    "target": 4,
+    "source": 5,
+    "type": "type1"
+  },
+  {
+    "target": 2,
+    "source": 5,
+    "type": "type2"
+  },
+  {
+    "target": 7,
+    "source": 8,
+    "type": "type1"
+  },
+  {
+    "target": 4,
+    "source": 8,
+    "type": "type1"
+  },
+  {
+    "target": 5,
+    "source": 7,
+    "type": "type1"
+  }
+]
